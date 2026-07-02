@@ -8,7 +8,11 @@ jobs:
   build:
     strategy:
       matrix:
-        platform: [ubuntu-latest, windows-11-arm]
+        include:
+          - platform: ubuntu-latest
+            java-distribution: temurin
+          - platform: windows-11-arm
+            java-distribution: microsoft
 
     runs-on: ${{ matrix.platform }}
     defaults:
@@ -25,7 +29,7 @@ jobs:
       - name: Setup JDK
         uses: actions/setup-java@v5
         with:
-          distribution: 'temurin'
+          distribution: '${{ matrix.java-distribution }}'
           java-version: '${{ env.JDK_VER }}'
 
       - name: Fetch Dependencies
