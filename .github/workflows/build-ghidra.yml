@@ -36,7 +36,7 @@ jobs:
           gradle-version: nightly
 
       - name: Fetch Dependencies
-        run: gradle -p .github -I gradle/support/fetchDependencies.gradle -DhideDownloadProgress -DnoEclipse help
+        run: gradle -p .github -I "$GITHUB_WORKSPACE/gradle/support/fetchDependencies.gradle" -DhideDownloadProgress -DnoEclipse help
 
       - name: Build Ghidra
         run: ./gradlew.bat buildGhidra --parallel
