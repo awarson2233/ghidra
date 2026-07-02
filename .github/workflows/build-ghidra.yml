@@ -1,21 +1,26 @@
 name: Build Ghidra
 
-on: [push]
+on:
+  push:
+  workflow_dispatch:
 
 jobs:
   build:
     strategy:
       matrix:
-        platform: [ubuntu-latest]
+        platform: [ubuntu-latest, windows-11-arm]
 
     runs-on: ${{ matrix.platform }}
+    defaults:
+      run:
+        shell: bash
     steps:
 
       - name: Checkout repository
         uses: actions/checkout@v6
-  
+
       - name: Read Ghidra JDK Version
-        run: echo "JDK_VER=$(awk -F'=' '$1=="application.java.min" {print $2}' Ghidra/application.properties)" >> $GITHUB_ENV 
+        run: echo "JDK_VER=$(awk -F'=' '$1=="application.java.min" {print $2}' Ghidra/application.properties)" >> $GITHUB_ENV
 
       - name: Setup JDK
         uses: actions/setup-java@v5
@@ -28,3 +33,10 @@ jobs:
 
       - name: Build Ghidra
         run: ./gradlew buildGhidra --parallel
+
+      - name: Upload distribution
+        uses: actions/upload-artifact@v4
+        with:
+          name: ghidra-${{ matrix.platform }}
+          path: build/dist/*.zip
+          if-no-files-found: error
