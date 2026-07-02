@@ -36,10 +36,10 @@ jobs:
           gradle-version: nightly
 
       - name: Fetch Dependencies
-        run: gradle -I gradle/support/fetchDependencies.gradle -DhideDownloadProgress -DnoEclipse init
+        run: ./gradlew.bat -I gradle/support/fetchDependencies.gradle -DhideDownloadProgress -DnoEclipse init
 
       - name: Build Ghidra
-        run: gradle buildGhidra --parallel
+        run: ./gradlew.bat buildGhidra --parallel
 
       - name: Upload distribution
         uses: actions/upload-artifact@v4
