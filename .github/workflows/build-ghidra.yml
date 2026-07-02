@@ -9,8 +9,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - platform: ubuntu-latest
-            java-distribution: temurin
           - platform: windows-11-arm
             java-distribution: microsoft
 
