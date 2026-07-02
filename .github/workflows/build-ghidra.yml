@@ -21,10 +21,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Read Ghidra Build Versions
-        run: |
-          echo "JDK_VER=$(awk -F'=' '$1=="application.java.min" {print $2}' Ghidra/application.properties)" >> $GITHUB_ENV
-          echo "GRADLE_VER=$(awk -F'=' '$1=="application.gradle.min" {print $2}' Ghidra/application.properties)" >> $GITHUB_ENV
+      - name: Read Ghidra JDK Version
+        run: echo "JDK_VER=$(awk -F'=' '$1=="application.java.min" {print $2}' Ghidra/application.properties)" >> $GITHUB_ENV
 
       - name: Setup JDK
         uses: actions/setup-java@v5
@@ -35,7 +33,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
         with:
-          gradle-version: '${{ env.GRADLE_VER }}'
+          gradle-version: nightly
 
       - name: Fetch Dependencies
         run: gradle -I gradle/support/fetchDependencies.gradle -DhideDownloadProgress -DnoEclipse
